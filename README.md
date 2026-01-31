@@ -9,7 +9,7 @@
 
 <h2 align="center">
   Overview of ECDock
-  <img align="center"  src="./image/cl.png" alt="...">
+  <img align="center"  src="frame4.png" alt="...">
 </h2>
 
 
