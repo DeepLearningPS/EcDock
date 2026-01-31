@@ -1,6 +1,6 @@
 
 <h1 align="center">
-   ECDock
+   EC-Dock
 </h1>
 
 <h4 align="center">EC-Dock: A Fast Equivariant Consistency Model for Molecular Docking and Virtual Screening</h4>
@@ -8,7 +8,6 @@
 
 
 <h2 align="center">
-  Overview of ECDock
   <img align="center"  src="frame4.png" alt="...">
 </h2>
 
