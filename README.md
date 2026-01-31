@@ -1,14 +1,14 @@
 
 <h1 align="center">
-   IFMDock
+   ECDock
 </h1>
 
-<h4 align="center">Equivariant Flow Matching for Molecular Docking Guided by Ligand–Protein Interactions</h4>
+<h4 align="center">EC-Dock: A Fast Equivariant Consistency Model for Molecular Docking and Virtual Screening</h4>
 
 
 
 <h2 align="center">
-  Overview of IFMDock
+  Overview of ECDock
   <img align="center"  src="./image/cl.png" alt="...">
 </h2>
 
