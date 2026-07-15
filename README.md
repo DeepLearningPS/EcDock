@@ -123,11 +123,12 @@ The final results will be copied to:
 If you find EC-Dock useful in your research, please consider citing:
 
 ```bibtex
-@article{fan2026ecdock,
-  title   = {EC-Dock: A Fast Equivariant Consistency Model for Molecular Docking and Virtual Screening},
-  author  = {Fan, Zhiguang and Yang, Yuedong and Xu, Mingyuan and Chen, Hongming},
-  journal = {Journal of Chemical Information and Modeling},
-  year    = {2026}
+@article{fan2026ec,
+  title={EC-Dock: A Fast Equivariant Consistency Model for Molecular Docking and Virtual Screening},
+  author={Fan, Zhiguang and Yang, Yuedong and Xu, Mingyuan and Chen, Hongming},
+  journal={Journal of Chemical Information and Modeling},
+  year={2026},
+  publisher={ACS Publications}
 }
 ```
 
