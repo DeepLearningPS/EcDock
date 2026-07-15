@@ -1,0 +1,260 @@
+data:
+  #name: pdbbind                                  # pl or pdbbind
+  path: ../CrossDocked2020/data/newer_pdbbind2020               # ./data/crossdocked_v1.1_rmsd1.0_pocket10 or ./data/pdbbind2020_r10
+  split: ../CrossDocked2020/data/newer_pdbbind2020/newer_pdbbind2020_split.pt             # ./data/crossdocked_pocket10_pose_split.pt or ./data/pdbbind2020_r10_split.pt
+  
+
+  transform:
+    ligand_atom_mode: add_aromatic #
+    random_rot: False #
+
+  
+  protein_max_atom_num: 1184
+  ligand_max_atom_num: 224
+
+model:
+  model_mode: equiformer # escn, equiformer, egnn
+  #euiformer: False
+  #escn: False
+  diffusion_mode: CM # CM(consistency model), DDPM # newly add
+
+  model_mean_type: C0  # ['noise', 'C0'] #C0,nosie，, noise
+  beta_schedule: sigmoid
+  beta_start: 1.e-7
+  beta_end: 2.e-3
+  v_beta_schedule: cosine
+  v_beta_s: 0.01
+  num_diffusion_timesteps: 1000 #，
+  loss_v_weight: 100.
+  loss_exp_weight: 1.
+  sample_time_method: symmetric  # ['importance', 'symmetric']
+  affinity_with_diffusion: False  # affinity decrease with time
+  use_classifier_guide: True
+  time_emb_dim: 0
+  time_emb_mode: simple
+  center_pos_mode: protein
+
+  node_indicator: True
+  model_type: uni_o2
+  num_blocks: 1
+  num_layers: 9
+  hidden_dim: 128 #512 128,16equiformer
+  n_heads: 16
+  edge_feat_dim: 340  # edge type feat, #4,8,20, ，4/88/340, equifromer
+  
+  num_r_gaussian: 20
+  knn: 32    #32  
+  num_node_types: 20 #
+  act_fn: relu
+  norm: True
+  cutoff_mode: knn  # [radius, none]
+  ew_net_type: global  # [r, m, none]
+  num_x2h: 1
+  num_h2x: 1
+  r_max: 10.
+  x2h_out_fc: False
+  sync_twoup: True #，True，，，,，，
+  pred_exp_from_all: False
+
+train:
+  seed: 2021
+  batch_size: 16 #1，equiformer,，，
+  num_workers: 8 #
+  n_acc_batch: 1
+  max_iters: 10000000
+  val_freq: 1000
+  pos_noise_std: 0.1
+  max_grad_norm: 2.0 #1.5,8
+  bond_loss_weight: 1.0
+  optimizer:
+    type: adam
+    lr: 1.e-3
+    weight_decay: 0
+    beta1: 0.95
+    beta2: 0.999
+  scheduler:
+    type: plateau
+    factor: 0.95
+    patience: 15
+    min_lr: 1.e-5
+
+
+
+#equiformerGPU，，(，[n,d], ，[n, m, d])
+equiformer:
+  name: equiformer_v2
+  batch_size:               8
+  use_pbc:                  False  #,True
+  regress_forces:           True
+  otf_graph:                True  #，，?？
+  max_neighbors:            32
+  max_radius:               12.0
+  max_num_elements:         200   #17/200
+
+  num_layers:               10 #12,，4, 
+  sphere_channels:          8  #128
+  attn_hidden_channels:     8 #64，      # [64, 96] This determines the hidden size of message passing. Do not necessarily use 96. 
+  num_heads:                2               #1，，8
+  attn_alpha_channels:      8 #64              # Not used when `use_s2_act_attn` is True. 
+  attn_value_channels:      8
+  ffn_hidden_channels:      8  #128
+  norm_type:                'layer_norm_sh'    # ['rms_norm_sh', 'layer_norm', 'layer_norm_sh']
+
+  lmax_list:                [4]             #，6。6，，
+  mmax_list:                [2]             
+  grid_resolution:          18              # 18，[18, 16, 14, None] For `None`, simply comment this line. 
+
+  num_sphere_samples:       8  #128
+
+  edge_channels:              8  #128
+  use_atom_edge_embedding:    True          #True, ，，，
+  share_atom_edge_embedding:  False         # If `True`, `use_atom_edge_embedding` must be `True` and the atom edge embedding will be shared across all blocks. 
+  use_m_share_rad:            False
+  distance_function:          'gaussian'
+  num_distance_basis:         4           # not used
+
+  attn_activation:          'silu'
+  use_s2_act_attn:          False       # [False, True] Switch between attention after S2 activation or the original EquiformerV1 attention. 
+  use_attn_renorm:          True        # Attention re-normalization. Used for ablation study.
+  ffn_activation:           'silu'      # ['silu', 'swiglu']
+  use_gate_act:             False       # [True, False] Switch between gate activation and S2 activation
+  use_grid_mlp:             True        # [False, True] If `True`, use projecting to grids and performing MLPs for FFNs.
+  use_sep_s2_act:           True        # Separable S2 activation. Used for ablation study.
+
+  alpha_drop:               0.1         # [0.0, 0.1]
+  drop_path_rate:           0.05        # [0.0, 0.05] 
+  proj_drop:                0.0
+
+  weight_init:              'uniform'    # ['uniform', 'normal']
+
+
+
+
+equiformer_old2:
+  name: equiformer_v2
+  batch_size:               8
+  use_pbc:                  False  #,True
+  regress_forces:           True
+  otf_graph:                True  #，，?？
+  max_neighbors:            32
+  max_radius:               12.0
+  max_num_elements:         200
+
+  num_layers:               10 #12,，4, 
+  sphere_channels:          16  #128
+  attn_hidden_channels:     16 #64，      # [64, 96] This determines the hidden size of message passing. Do not necessarily use 96. 
+  num_heads:                4               #1，，8
+  attn_alpha_channels:      16 #64              # Not used when `use_s2_act_attn` is True. 
+  attn_value_channels:      16
+  ffn_hidden_channels:      16  #128
+  norm_type:                'layer_norm_sh'    # ['rms_norm_sh', 'layer_norm', 'layer_norm_sh']
+
+  lmax_list:                [4]             #，6。6，，
+  mmax_list:                [2]             
+  grid_resolution:          18              # 18，[18, 16, 14, None] For `None`, simply comment this line. 
+
+  num_sphere_samples:       16  #128
+
+  edge_channels:              16  #128
+  use_atom_edge_embedding:    True          #True, ，，，
+  share_atom_edge_embedding:  False         # If `True`, `use_atom_edge_embedding` must be `True` and the atom edge embedding will be shared across all blocks. 
+  use_m_share_rad:            False
+  distance_function:          'gaussian'
+  num_distance_basis:         4           # not used
+
+  attn_activation:          'silu'
+  use_s2_act_attn:          False       # [False, True] Switch between attention after S2 activation or the original EquiformerV1 attention. 
+  use_attn_renorm:          True        # Attention re-normalization. Used for ablation study.
+  ffn_activation:           'silu'      # ['silu', 'swiglu']
+  use_gate_act:             False       # [True, False] Switch between gate activation and S2 activation
+  use_grid_mlp:             True        # [False, True] If `True`, use projecting to grids and performing MLPs for FFNs.
+  use_sep_s2_act:           True        # Separable S2 activation. Used for ablation study.
+
+  alpha_drop:               0.1         # [0.0, 0.1]
+  drop_path_rate:           0.05        # [0.0, 0.05] 
+  proj_drop:                0.0
+
+  weight_init:              'uniform'    # ['uniform', 'normal']
+
+
+
+
+
+equiformer_new:
+  name: equiformer_v2
+  batch_size:               8
+  use_pbc:                  False  #,True
+  regress_forces:           True
+  otf_graph:                True  #，，?？
+  max_neighbors:            32
+  max_radius:               12.0
+  max_num_elements:         200
+
+  num_layers:               8 #12,，4, 
+  sphere_channels:          8  #128
+  attn_hidden_channels:     8 #64，      # [64, 96] This determines the hidden size of message passing. Do not necessarily use 96. 
+  num_heads:                2               #1，，8
+  attn_alpha_channels:      8 #64              # Not used when `use_s2_act_attn` is True. 
+  attn_value_channels:      8
+  ffn_hidden_channels:      8  #128
+  norm_type:                'layer_norm_sh'    # ['rms_norm_sh', 'layer_norm', 'layer_norm_sh']
+
+  lmax_list:                [6]             #，6。6，，
+  mmax_list:                [2]             
+  grid_resolution:          18              # 18，[18, 16, 14, None] For `None`, simply comment this line. 
+
+  num_sphere_samples:       8  #128
+
+  edge_channels:              8  #128
+  use_atom_edge_embedding:    True          #True, ，，，
+  share_atom_edge_embedding:  False         # If `True`, `use_atom_edge_embedding` must be `True` and the atom edge embedding will be shared across all blocks. 
+  use_m_share_rad:            False
+  distance_function:          'gaussian'
+  num_distance_basis:         4           # not used
+
+  attn_activation:          'silu'
+  use_s2_act_attn:          False       # [False, True] Switch between attention after S2 activation or the original EquiformerV1 attention. 
+  use_attn_renorm:          True        # Attention re-normalization. Used for ablation study.
+  ffn_activation:           'silu'      # ['silu', 'swiglu']
+  use_gate_act:             False       # [True, False] Switch between gate activation and S2 activation
+  use_grid_mlp:             True        # [False, True] If `True`, use projecting to grids and performing MLPs for FFNs.
+  use_sep_s2_act:           True        # Separable S2 activation. Used for ablation study.
+
+  alpha_drop:               0.1         # [0.0, 0.1]
+  drop_path_rate:           0.05        # [0.0, 0.05] 
+  proj_drop:                0.0
+
+  weight_init:              'uniform'    # ['uniform', 'normal']
+
+
+
+
+
+
+#equiformerGPU，，(，[n,d], ，[n, m, d])
+escn:
+  name: escn
+  batch_size:               8
+  use_pbc:                  False  #,True
+  regress_forces:           True
+  otf_graph:                True  #，，?？
+  max_neighbors:            32
+  max_radius:               8.0
+  max_num_elements:         200
+
+  num_layers:               8 #8
+  lmax_list:                [6]             #，6。6，，
+  mmax_list:                [2]             
+  grid_resolution:          18              # 18，[18, 16, 14, None] For `None`, simply comment this line. 
+
+  num_sphere_samples:       16  #128
+
+  sphere_channels:          16
+  hidden_channels:          16
+  edge_channels:            16
+  use_grid:                 True
+  num_sphere_samples:       16
+  distance_function:        'gaussian'
+  basis_width_scalar:       1.0
+  distance_resolution:      0.02
+  show_timing_info:         False

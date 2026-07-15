@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Conda / env
+.conda/
+env/
+venv/
+*.egg-info/
+
+# Logs
+*.log
+
+# Temporary EC-Dock outputs
+tmpdata/
+tmpresault/
+user_data/
+input_data/*/tmp*/
+output/
+outputs/
+results/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

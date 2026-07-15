@@ -1,0 +1,2 @@
+input_protein,input_ligand,input_docking_grid,output_ligand_name,output_ligand_dir2
+/mnt_191/zg_fan/new_Github-ECDock/tmpdata/tmpdata/5SB2/5SB2_protein_256.pdb,/mnt_191/zg_fan/new_Github-ECDock/tmpdata/tmpdata/5SB2/5SB2_ligand.sdf,/mnt_191/zg_fan/new_Github-ECDock/tmpdata/tmpdata/5SB2/5SB2_ligand_docking_grid_boxsize10.json,5SB2,tmpdata_predict_sdf_boxsize10/5SB2
